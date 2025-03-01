@@ -1,5 +1,61 @@
 #Hangman
 import random
+stages = [r'''
+  +---+
+  |   |
+  O   |
+ /|\  |
+ / \  |
+      |
+=========
+''', r'''
+  +---+
+  |   |
+  O   |
+ /|\  |
+ /    |
+      |
+=========
+''', r'''
+  +---+
+  |   |
+  O   |
+ /|\  |
+      |
+      |
+=========
+''', '''
+  +---+
+  |   |
+  O   |
+ /|   |
+      |
+      |
+=========''', '''
+  +---+
+  |   |
+  O   |
+  |   |
+      |
+      |
+=========
+''', '''
+  +---+
+  |   |
+  O   |
+      |
+      |
+      |
+=========
+''', '''
+  +---+
+  |   |
+      |
+      |
+      |
+      |
+=========
+''']
 
 word_list = ["aardvark", "baboon", "camel"]
 
@@ -27,4 +83,9 @@ while not game_over:
         print(f"Wrong guess. You have {lives} lives left.")
         if lives == 0:
             game_over = True
-            print("You lose!")
+            print(f"***********************YOU LOSE**********************")
+    if "_" not in display:
+        game_over = True
+        print("****************************YOU WIN****************************")
+
+    print(stages[lives])
