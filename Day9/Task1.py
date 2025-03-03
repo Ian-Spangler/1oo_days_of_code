@@ -17,4 +17,3 @@ for thing in programming_dictionary:
     print(thing)
     print(programming_dictionary[thing])
 
-    
