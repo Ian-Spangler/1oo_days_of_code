@@ -71,6 +71,7 @@ def coin(order):
 def make(order):
     for key in MENU[order]["ingredients"]:
         resources[key] -= MENU[order]["ingredients"][key]
+    print(f"Here is your {order}. Enjoy!")
     return MENU[order]["cost"]
 
 while work:
@@ -87,4 +88,3 @@ while work:
             work = False
     
 
-#print(f"Here is your {order}. Enjoy!")
