@@ -13,17 +13,29 @@
 import turtle as t
 import random
 
-color_list = [(144, 76, 50), (188, 165, 117), (248, 244, 246), (166, 153, 36), (14, 46, 85), (139, 185, 176), (146, 56, 81)]
+number_of_dots = 100
+color_list = [(144, 76, 50), (188, 165, 117), (166, 153, 36), (14, 46, 85), (139, 185, 176), (146, 56, 81)]
 t.colormode(255)
 timmy_the_turtle = t.Turtle()
 
-for i in range(5):
-    for j in range(5):
-        timmy_the_turtle.pendown()
-        timmy_the_turtle.dot(20, random.choice(color_list))
-        timmy_the_turtle.penup()
-        timmy_the_turtle.forward(50)
+timmy_the_turtle.hideturtle()
+timmy_the_turtle.speed('fastest')
+timmy_the_turtle.penup()
+timmy_the_turtle.setheading(225)
+timmy_the_turtle.forward(300)
+timmy_the_turtle.setheading(0)
 
+for dot_count in range(1, number_of_dots):
+    timmy_the_turtle.pendown()
+    timmy_the_turtle.dot(20, random.choice(color_list))
+    timmy_the_turtle.penup()
+    timmy_the_turtle.forward(50)
+    if dot_count % 10 == 0:
+        timmy_the_turtle.setheading(90)
+        timmy_the_turtle.forward(50)
+        timmy_the_turtle.setheading(180)
+        timmy_the_turtle.forward(500)
+        timmy_the_turtle.setheading(0)
 
 screen = t.Screen()
 screen.exitonclick()
