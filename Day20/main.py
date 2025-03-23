@@ -1,4 +1,4 @@
-# Snake Game
+# Snake Game (Part1)
 from turtle import Turtle, Screen
 from snake import Snake
 import time
