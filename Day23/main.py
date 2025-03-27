@@ -12,8 +12,7 @@ screen.tracer(0)
 
 player = Player()
 
-cars = []
-cars.append(CarManager())
+car_manager = CarManager()
 
 scoreboard = Scoreboard()
 
@@ -30,16 +29,19 @@ while game_is_on:
     # Create new car every 0.6 seconds
     if count == 6:
         count = 1
-        cars.append(CarManager())
+        car_manager.new_car()
     count += 1
-    # Detect when the player collides with car & move every car
-    for car in cars:
-        car.move()
+    # Move every car
+    car_manager.move()
+    # Detect when the player collides with car
+    for car in car_manager.cars:
         if car.distance(player) < 30:
             game_is_on = False
             scoreboard.game_over()
     # Detect when player reaches the top
-    if player.ycor() > 280:
+    if player.goal():
+        player.reset()
+        car_manager.level_up()
         scoreboard.new_score()
 
 screen.exitonclick()
