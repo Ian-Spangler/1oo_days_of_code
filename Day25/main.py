@@ -20,15 +20,33 @@ data = pandas.read_csv("weather_data.csv")
 # # Data dictionary
 # data_dict = data.to_dict()
 # print(data_dict)
+#
+# # Temperature list
+# temp_list = data["temp"].to_list()
+# print(temp_list)
+#
+# # Average temperature
+# average_temp = sum(temp_list) / len(temp_list)
+# print(average_temp)
+# print(data["temp"].mean())
+#
+# # Maximum temperature
+# print(data["temp"].max())
+#
+# # Get data in column
+# print(data["condition"])
+# print(data.condition)
+#
+# # Get data in row
+# print(data[data.day == "Monday"])
 
-# Temperature list
-temp_list = data["temp"].to_list()
-print(temp_list)
+# Print the row of data which had the highest temperature
+print(data[data.temp == data["temp"].max()])
 
-# Average temperature
-average_temp = sum(temp_list) / len(temp_list)
-print(average_temp)
-print(data["temp"].mean())
+monday = data[data.day == "Monday"]
+print(monday.temp * 9/5 + 32)
 
-# Maximum temperature
-print()
+# Create a dataframe from scratch
+data_dict = {
+    
+}
