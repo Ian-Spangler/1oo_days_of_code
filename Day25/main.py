@@ -40,13 +40,17 @@ data = pandas.read_csv("weather_data.csv")
 # # Get data in row
 # print(data[data.day == "Monday"])
 
-# Print the row of data which had the highest temperature
-print(data[data.temp == data["temp"].max()])
+# # Print the row of data which had the highest temperature
+# print(data[data.temp == data["temp"].max()])
 
-monday = data[data.day == "Monday"]
-print(monday.temp * 9/5 + 32)
+# monday = data[data.day == "Monday"]
+# print(monday.temp * 9/5 + 32)
 
 # Create a dataframe from scratch
 data_dict = {
-    
+    "students" : ["Amy", "James", "Ian"],
+    "scores" : [45, 70, 99]
 }
+
+data = pandas.DataFrame(data_dict)
+data.to_csv("new_data.csv")
