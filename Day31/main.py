@@ -10,9 +10,10 @@ def new_card():
     global current_word, flip_timer
     window.after_cancel(flip_timer)
     current_word = random.choice(french_english_dict)
+    canvas.itemconfig(card_image, image=front_image)
     canvas.itemconfig(card_title, text="French", fill="black")
     canvas.itemconfig(card_word, text=current_word["French"], fill="black")
-    window.after(3000, func=flip_card)
+    flip_timer = window.after(3000, func=flip_card)
 
 def flip_card():
     global current_word
@@ -21,16 +22,23 @@ def flip_card():
     canvas.itemconfig(card_word, text=current_word["English"], fill="white")
 
 def update_list():
-    pass
+    global current_word
+    french_english_dict.remove(current_word)
+    data_frame = pandas.DataFrame(french_english_dict)
+    data_frame.to_csv("words_to_learn.csv", index=False)
+    new_card()
 
 window = Tk()
 window.title("Flashy")
 window.config(padx=50, pady=50, bg=BACKGROUND_COLOR)
 flip_timer = window.after(3000, func=flip_card)
 
-data = pandas.read_csv("data/french_words.csv")
-french_english_dict = data.to_dict(orient="records")
-# french_english_dict = {row.French:row.English for (index, row) in data.iterrows()}
+try:
+    data = pandas.read_csv("words_to_learn.csv")
+except FileNotFoundError:
+    data = pandas.read_csv("data/french_words.csv")
+finally:
+    french_english_dict = data.to_dict(orient="records")
 
 current_word = {}
 
@@ -52,7 +60,7 @@ cross_button.grid(column=0, row=1)
 
 # Check button
 check_image = PhotoImage(file="images/right.png")
-check_button = Button(image=check_image, highlightthickness=0, command=new_card)
+check_button = Button(image=check_image, highlightthickness=0, command=update_list)
 check_button.grid(column=1, row=1)
 
 
