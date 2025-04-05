@@ -7,18 +7,21 @@ import pandas
 import random
 
 def new_card():
-    global current_word
+    global current_word, flip_timer
+    window.after_cancel(flip_timer)
     current_word = random.choice(french_english_dict)
     canvas.itemconfig(card_title, text="French", fill="black")
     canvas.itemconfig(card_word, text=current_word["French"], fill="black")
+    window.after(3000, func=flip_card)
 
 def flip_card():
-    global current_word, flip_timer
-    window.after_cancel(flip_timer)
+    global current_word
     canvas.itemconfig(card_image, image=back_image)
     canvas.itemconfig(card_title, text="English", fill="white")
     canvas.itemconfig(card_word, text=current_word["English"], fill="white")
-    window.after(3000, func=flip_card)
+
+def update_list():
+    pass
 
 window = Tk()
 window.title("Flashy")
@@ -36,9 +39,11 @@ canvas = Canvas(width=800, height=526, bg=BACKGROUND_COLOR, highlightthickness=0
 front_image = PhotoImage(file="images/card_front.png")
 back_image = PhotoImage(file="images/card_back.png")
 card_image = canvas.create_image(400, 263, image=front_image)
-card_title = canvas.create_text(400, 150, text="French", font=("Arial", 40, "italic"), fill="black")
-card_word = canvas.create_text(400, 263, text=random.choice(french_english_dict)["French"], font=("Arial", 60, "bold"), fill="black")
+card_title = canvas.create_text(400, 150, text="", font=("Arial", 40, "italic"), fill="black")
+card_word = canvas.create_text(400, 263, text="", font=("Arial", 60, "bold"), fill="black")
 canvas.grid(column=0, row=0, columnspan=2)
+
+new_card()
 
 # Cross button
 cross_image = PhotoImage(file="images/wrong.png")
