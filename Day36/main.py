@@ -1,0 +1,67 @@
+import requests
+# import datetime as dt
+
+STOCK = "TSLA"
+COMPANY_NAME = "Tesla Inc"
+
+## STEP 1: Use https://www.alphavantage.co
+# When STOCK price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
+STOCK_API_KEY = "H903OA4R450Z027E"
+NEWS_API_KEY = "bf6d1202180f4cc4a8bfd1574a5cc716"
+
+stock_parameters = {
+    "function": "TIME_SERIES_DAILY",
+    "symbol": STOCK,
+    "interval": "30min",
+    "apikey": STOCK_API_KEY
+}
+
+stock_response = requests.get("https://www.alphavantage.co/query?", params= stock_parameters)
+stock_response.raise_for_status()
+stock_data = stock_response.json()["Time Series (Daily)"]
+
+# # My way of doing it
+# now = dt.datetime.now().date()
+# yesterday = now - dt.timedelta(days=1)
+# opening_price = float(stock_data[f"{yesterday}"]["1. open"])
+# closing_price = float(stock_data[f"{yesterday}"]["4. close"])
+
+# The better way
+data_list = [value  for (key, value) in  stock_data.items()]
+opening_price = float(data_list[0]["1. open"])
+closing_price = float(data_list[0]["4. close"])
+
+# if opening_price*1.05 < closing_price:
+#     print("Get News")
+# elif opening_price*0.95 > closing_price:
+#     print("Get News")
+
+difference = abs(opening_price - closing_price)
+diff_percent = (difference / closing_price) * 100
+
+if diff_percent > 5:
+    ## STEP 2: Use https://newsapi.org
+    # Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME.
+    news_parameters = {
+        "qInTitle": COMPANY_NAME,
+        "apiKey": NEWS_API_KEY
+    }
+    news_response = requests.get("https://newsapi.org/v2/everything?", params= news_parameters)
+    news_response.raise_for_status()
+    news_data = news_response.json()["articles"]
+    three_articles = news_data[:2]
+## STEP 3: Use https://www.twilio.com
+# Send a seperate message with the percentage change and each article's title and description to your phone number. 
+
+
+#Optional: Format the SMS message like this: 
+"""
+TSLA: 🔺2%
+Headline: Were Hedge Funds Right About Piling Into Tesla Inc. (TSLA)?. 
+Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and prominent investors are required to file by the SEC The 13F filings show the funds' and investors' portfolio positions as of March 31st, near the height of the coronavirus market crash.
+or
+"TSLA: 🔻5%
+Headline: Were Hedge Funds Right About Piling Into Tesla Inc. (TSLA)?. 
+Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and prominent investors are required to file by the SEC The 13F filings show the funds' and investors' portfolio positions as of March 31st, near the height of the coronavirus market crash.
+"""
+
