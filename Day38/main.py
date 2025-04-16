@@ -39,7 +39,7 @@ sheety_headers = {
 
 for exercise in result["exercises"]:
     sheet_inputs = {
-        f"{SHEET_NAME}": {
+        SHEET_NAME: {
             "date": date,
             "time": time,
             "exercise": exercise["name"].title(),
