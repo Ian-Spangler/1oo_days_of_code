@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-SEARCH_ENDPOINT = "https://api.amadeus.com/v1/reference-data/locations/cities"
+SEARCH_ENDPOINT = "https://test.api.amadeus.com/v1/reference-data/locations/cities"
 TOKEN_ENDPOINT = "https://test.api.amadeus.com/v1/security/oauth2/token"
 
 class FlightSearch:
@@ -33,7 +33,7 @@ class FlightSearch:
     def city_search(self, city):
         search_paramas = {
             "keyword": city,
-            "max": 2,
+            "max": "2",
             "include": "AIRPORTS"
         }
 
@@ -41,7 +41,7 @@ class FlightSearch:
             "Authorization": f"Bearer {self._token}"
         }
         search_response = requests.get(url=SEARCH_ENDPOINT, params=search_paramas, headers=search_headers)
-        print(f"Status code {search_response.status_code}. Airport IATA: {search_response.text}")
+        # print(f"Status code {search_response.status_code}. Airport IATA: {search_response.text}")
         try:
             code = search_response.json()["data"][0]['iataCode']
         except IndexError:

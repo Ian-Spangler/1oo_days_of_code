@@ -30,7 +30,6 @@ class DataManager:
             }
             update_response = requests.put(
                 url= f"{SHEETY_ENDPOINT}/{city['id']}",
-                json= new_data,
-                auth= self.authorization
+                json= new_data
             )
             print(update_response.text)

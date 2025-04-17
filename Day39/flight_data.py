@@ -15,7 +15,7 @@ class FlightData:
         self._api_key = os.environ["AMADEUS_API_KEY"]
         self._api_secret = os.environ["AMADEUS_API_SECRET"]
         self._token = self.get_token()
-        self.price = 0
+        self.cheapest_price = 0
 
     def get_token(self):
         token_paramas = {
@@ -62,5 +62,7 @@ class FlightData:
                   "-reference")
             print("Response body:", data_response.text)
             return None
-
+        # self.cheapest_price = data_response.json()
+        for data in data_response.json()["data"]:
+            data["price"]
         return data_response.json()
