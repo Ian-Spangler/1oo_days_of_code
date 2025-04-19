@@ -1,3 +1,6 @@
+# my_email = "100daysofcodetestIan@gmail.com"
+# my_password = "AppPassword" # 9s6sA,$RK&+ykJG
+
 import os
 import requests
 from requests.auth import HTTPBasicAuth
@@ -18,6 +21,7 @@ class DataManager:
 
     def get_data(self):
         sheety_response = requests.get(url=SHEETY_ENDPOINT, auth=self.authorization)
+        print(sheety_response.json())
         self.sheety_data = sheety_response.json()["prices"]
         return self.sheety_data
 
@@ -32,4 +36,16 @@ class DataManager:
                 url= f"{SHEETY_ENDPOINT}/{city['id']}",
                 json= new_data
             )
-            print(update_response.text)
+            # print(update_response.text)
+
+    def update_price(self):
+        for city in self.sheety_data:
+            new_data = {
+                "price": {
+                    "lowestPrice": city["lowestPrice"]
+                }
+            }
+            update_response = requests.put(
+                url=f"{SHEETY_ENDPOINT}/{city['id']}",
+                json=new_data
+            )

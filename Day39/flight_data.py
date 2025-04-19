@@ -2,7 +2,6 @@ import os
 import requests
 from requests.auth import HTTPBasicAuth
 from dotenv import load_dotenv
-import datetime as dt
 
 load_dotenv()
 
@@ -11,11 +10,16 @@ TOKEN_ENDPOINT = "https://test.api.amadeus.com/v1/security/oauth2/token"
 
 class FlightData:
     #This class is responsible for structuring the flight data.
-    def __init__(self):
+    def __init__(self, start, end):
         self._api_key = os.environ["AMADEUS_API_KEY"]
         self._api_secret = os.environ["AMADEUS_API_SECRET"]
         self._token = self.get_token()
+        self.departure_code = "ICN"
+        self.departure_date = start
+        self.return_date = end
         self.cheapest_price = 0
+        self.update = False
+
 
     def get_token(self):
         token_paramas = {
@@ -34,14 +38,11 @@ class FlightData:
         return token_response.json()["access_token"]
 
     def find_cheapest_flight(self, code):
-        start = dt.datetime.now() + dt.timedelta(days=1)
-        end = dt.datetime.now() + dt.timedelta(days=180)
-
         data_paramas = {
-            "originLocationCode": "ICN",
+            "originLocationCode": self.departure_code,
             "destinationLocationCode": code,
-            "departureDate": start.strftime("%Y-%m-%d"),
-            "returnDate": end.strftime("%Y-%m-%d"),
+            "departureDate": self.departure_date.strftime("%Y-%m-%d"),
+            "returnDate": self.return_date.strftime("%Y-%m-%d"),
             "adults": 1,
             "nonStop": "true",
             "currencyCode": "KRW",
@@ -62,7 +63,18 @@ class FlightData:
                   "-reference")
             print("Response body:", data_response.text)
             return None
-        # self.cheapest_price = data_response.json()
+
         for data in data_response.json()["data"]:
-            data["price"]
-        return data_response.json()
+            price = float(data["price"]["total"])
+            if self.cheapest_price == 0:
+                self.cheapest_price = price
+                self.update = True
+            elif price < self.cheapest_price:
+                self.cheapest_price = price
+                self.update = True
+
+        return self.cheapest_price
+
+    def reset(self):
+        self.cheapest_price = 0
+        self.update = False
