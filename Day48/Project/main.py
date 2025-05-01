@@ -13,18 +13,42 @@ start_time = time.time()
 
 game_is_on = True
 
+affordable = 0
+
+five_seconds = time.time() + 5
+five_minutes = time.time() + 60*5
+
+cookie = driver.find_element(By.ID, value="cookie")
+
+store = driver.find_elements(By.CSS_SELECTOR, value="#store div")
+store_id = [item.get_attribute("id") for item in store]
+store_id.pop(len(store_id) - 1)
+
 while game_is_on:
-    cookie = driver.find_element(By.ID, value="cookie")
     cookie.click()
 
-    store = driver.find_elements(By.ID, value="store")
-    store = store[::-1]
+    if time.time() >= five_seconds:
+        five_seconds = time.time() + 5
 
-    current_time = time.time()
-    elapsed_time = current_time - start_time
-    if elapsed_time >= 5:
-        start_time = time.time()
-        for item in store:
-            if item.get_attribute("class") != "greyed":
-                item.click()
+        store_price = driver.find_elements(By.CSS_SELECTOR, value="#store div b")
+        store_price.pop(len(store_price) - 1)
+        prices = [int(price.text.split("-")[1].replace(",", "")) for price in store_price]
 
+        upgrade_dict = {}
+        for n in range(len(store_id) - 1):
+            upgrade_dict[prices[n]] = store_id[n]
+
+        current_cookie = driver.find_element(By.ID, value="money").text
+        if "," in current_cookie:
+            money_element = current_cookie.replace(",", "")
+        current_cookie = int(current_cookie)
+
+        for price in prices:
+            if price <= current_cookie:
+                affordable = price
+        driver.find_element(By.ID, value=upgrade_dict[affordable]).click()
+
+    if time.time() >= five_minutes:
+        cookie_per_s = driver.find_element(by=By.ID, value="cps").text
+        print(cookie_per_s)
+        five_minutes = time.time() + 60 * 5
