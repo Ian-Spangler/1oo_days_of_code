@@ -1,8 +1,5 @@
 # import smtplib
 #
-# my_email = "100daysofcodetestIan@gmail.com"
-# my_password = "AppPassword" # 9s6sA,$RK&+ykJG
-#
 # with smtplib.SMTP("smtp.gmail.com") as connection:
 #     connection.starttls()
 #     connection.login(user=my_email, password=my_password)
