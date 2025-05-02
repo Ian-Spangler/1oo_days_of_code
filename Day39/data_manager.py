@@ -1,6 +1,3 @@
-# my_email = "100daysofcodetestIan@gmail.com"
-# my_password = "AppPassword" # 9s6sA,$RK&+ykJG
-
 import os
 import requests
 from requests.auth import HTTPBasicAuth
