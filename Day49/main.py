@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
 
 # Keep Chrome browser open after program finishes
 chrome_options = webdriver.ChromeOptions()
@@ -24,20 +25,21 @@ input_password.send_keys("9s6sA,$RK&+ykJG")
 login_button = driver.find_element(By.CSS_SELECTOR, value=".login__form_action_container  button")
 login_button.click()
 
-# Send application
-jobs = driver.find_elements(By.CSS_SELECTOR, value=".pIFnaYAbsCdVmPcdEnTafeObZRrShHvhLg li")
+jobs = driver.find_elements(
+    By.CSS_SELECTOR,
+    ".pIFnaYAbsCdVmPcdEnTafeObZRrShHvhLg li div div div div div div a"
+) # This doesn't find all employers. I can't fix it
+
 for job in jobs:
-    job.click()
-    easy_apply = driver.find_element(By.CSS_SELECTOR, value=".jobs-apply-button--top-card button")
-    easy_apply.click()
-    mobile_phone_number = driver.find_element(By.XPATH, value='//*[@id="single-line-text-form-component-formElement-urn-li-jobs-applyformcommon-easyApplyFormElement-4198572746-11020553857-phoneNumber-nationalNumber"]')
-    mobile_phone_number.send_keys("01012341234")
-    next_button = driver.find_element(By.CSS_SELECTOR, value=".display-flex.justify-flex-end.ph5.pv4 button")
-    next_button.click()
-    next_button.click()
-    experience_python = driver.find_element(By.XPATH,
-                                            value='//*[@id="single-line-text-form-component-formElement-urn-li-jobs-applyformcommon-easyApplyFormElement-4198572746-11020553873-numeric"]')
-    experience_python.send_keys("0")
-    experience_java = driver.find_element(By.XPATH, value='//*[@id="single-line-text-form-component-formElement-urn-li-jobs-applyformcommon-easyApplyFormElement-4198572746-11020553881-numeric"]')
-    experience_java.send_keys("0")
-    
+    try:
+        job.send_keys(Keys.ENTER)
+        easy_apply = driver.find_element(By.CSS_SELECTOR, value=".jobs-apply-button--top-card button")
+        easy_apply.send_keys(Keys.ENTER)
+        mobile_phone_number = driver.find_element(By.XPATH, value='//*[@id="single-line-text-form-component-formElement-urn-li-jobs-applyformcommon-easyApplyFormElement-4199990101-9-phoneNumber-nationalNumber"]')
+        mobile_phone_number.send_keys("01012341234")
+        submit_button = driver.find_element(By.CSS_SELECTOR, value=".display-flex.justify-flex-end.ph5.pv4 button")
+        submit_button.send_keys(Keys.ENTER)
+    except NoSuchElementException:
+        print("This application is too complex")
+
+
