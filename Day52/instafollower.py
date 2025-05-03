@@ -8,6 +8,7 @@ class InstaFollower:
         self.chrome_options = webdriver.ChromeOptions()
         self.chrome_options.add_experimental_option("detach", True)
         self.driver = webdriver.Chrome(options=self.chrome_options)
+        self.similar_account = "city_xtra"
 
     def login(self):
         self.driver.get("https://www.instagram.com/")
@@ -18,5 +19,13 @@ class InstaFollower:
         password.send_keys("9s6sA,$RK&+ykJG")
         login = self.driver.find_element(By.XPATH, value='//*[@id="loginForm"]/div[1]/div[3]/button')
         login.click()
-        time.sleep(5)
-        # self.driver.quit()
+        time.sleep(10)
+        # Due to instagram update, we need to type authentication.
+        # So, auto login became a much difficult process.
+        # It is impossible to continue from here.
+
+    def find_followers(self):
+        pass
+
+    def follow(self):
+        pass
