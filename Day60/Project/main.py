@@ -1,8 +1,12 @@
 from flask import Flask, render_template, request
 import requests
+import smtplib
 
 # USE YOUR OWN npoint LINK! ADD AN IMAGE URL FOR YOUR POST. 👇
-posts = requests.get("https://api.npoint.io/c790b4d5cab58020d391").json()
+posts = requests.get("https://api.npoint.io/2e056593cce3ecc73ccf").json()
+
+my_email = "I am not gonna tell you"
+my_password = "I am not gonna tell you"
 
 app = Flask(__name__)
 
@@ -17,18 +21,17 @@ def about():
     return render_template("about.html")
 
 
-@app.route("/contact")
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
-    return render_template("contact.html")
-
-@app.route("/form-entry", methods=["POST"])
-def receive_data():
-    # return render_template("contact.html", name=request.form['name'], email=request.form['email'], phone=request.form['phone'], message=request.form['message'])
-    print(request.form['name'])
-    print(request.form['email'])
-    print(request.form['phone'])
-    print(request.form['message'])
-    return f"<h1>Successfully sent your message</h1>"
+    if request.method == "GET":
+        return render_template("contact.html", text="Contact Me")
+    elif request.method == "POST":
+        with smtplib.SMTP("smtp.gmail.com") as connection:
+            connection.starttls()
+            connection.login(user=my_email, password=my_password)
+            connection.sendmail(from_addr=my_email, to_addrs=request.form['email'],
+                                        msg=f"Subject:New Message\n\nName: {request.form['name']}\nEmail: {request.form['email']}\nPhone: {request.form['phone']}\nMessage: {request.form['message']}")
+        return render_template("contact.html", text="Successfully sent your message")
 
 @app.route("/post/<int:index>")
 def show_post(index):
