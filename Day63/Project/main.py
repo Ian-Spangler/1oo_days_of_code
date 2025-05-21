@@ -39,9 +39,15 @@ with app.app_context():
 
 @app.route('/', methods=["GET", "POST"])
 def home():
+    with app.app_context():
+        result = db.session.execute(db.select(Book).order_by(Book.title))
+        all_books = result.scalars()
     if request.method == "POST":
-        db.session.delete(user)
-        db.session.commit()
+        with app.app_context():
+            book_to_delete = db.session.execute(db.select(Book).where(Book.id == book_id)).scalar()
+            # or book_to_delete = db.get_or_404(Book, book_id)
+            db.session.delete(book_to_delete)
+            db.session.commit()
     return render_template('index.html', books=all_books)
 
 
@@ -50,7 +56,7 @@ def add():
     if request.method == "POST":
         data = request.form
         with app.app_context():
-            new_book = Book(id=data["id"], title=data["title"], author=data["author"], rating=data["rating"])
+            new_book = Book(title=data["title"], author=data["author"], rating=data["rating"])
             db.session.add(new_book)
             db.session.commit()
         return render_template('index.html')
@@ -58,7 +64,13 @@ def add():
 
 @app.route("/edit/id=<int:number>")
 def edit():
-    
+    book_id = 1
+    data = request.form
+    with app.app_context():
+        book_to_update = db.session.execute(db.select(Book).where(Book.id == book_id)).scalar()
+        # or book_to_update = db.get_or_404(Book, book_id)  
+        book_to_update.rating = data["rating"]
+        db.session.commit()  
     return render_template('edit.html')
 
 if __name__ == "__main__":
