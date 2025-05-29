@@ -110,11 +110,12 @@ def post(post_id):
         if not current_user.is_authenticated:
             flash("Please log in to comment")
             return redirect(url_for('login'))
-        data = request.form
-        new_comment = Comment(author=current_user, text=data["comment"])
-        db.session.add(new_comment)
-        db.session.commit()
-    return render_template("post.html", blog=post, form=form, logged_in=current_user.is_authenticated)
+        else:
+            data = request.form
+            new_comment = Comment(author=current_user, text=data["comment"])
+            db.session.add(new_comment)
+            db.session.commit()
+    return render_template("post.html", blog=post, form=form, logged_in=current_user.is_authenticated, comments=post.comments)
 
 @app.route('/new-post', methods=["GET", "POST"])
 @admin_only
