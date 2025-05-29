@@ -31,7 +31,7 @@
             <li>
               <div class="commenterImage">
                 <img
-                  src="../static/assets/img/default-profile.jpg"
+                  src="{{ comment.comment_author.email | gravatar }}"
                 />
               </div>
               <div class="commentText">

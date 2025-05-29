@@ -14,7 +14,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from forms import AddForm, RegisterForm, LoginForm, CommentForm
 from functools import wraps
 from flask import abort
-from typing import List
+from flask_gravatar import Gravatar
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
@@ -101,6 +101,15 @@ def about():
 @app.route('/contact')
 def contact():
     return render_template("contact.html", logged_in=current_user.is_authenticated)
+
+gravatar = Gravatar(app,
+                    size=100,
+                    rating='g',
+                    default='retro',
+                    force_default=False,
+                    force_lower=False,
+                    use_ssl=False,
+                    base_url=None)
 
 @app.route('/post/<post_id>', methods=["GET", "POST"])
 def post(post_id):
