@@ -114,17 +114,18 @@ gravatar = Gravatar(app,
 @app.route('/post/<post_id>', methods=["GET", "POST"])
 def post(post_id):
     form = CommentForm()
-    post = db.get_or_404(Post, post_id)
+    current_post = db.get_or_404(Post, post_id)
     if form.validate_on_submit():
         if not current_user.is_authenticated:
             flash("Please log in to comment")
             return redirect(url_for('login'))
         else:
             data = request.form
-            new_comment = Comment(author=current_user, text=data["comment"])
+            new_comment = Comment(comment_author=current_user, text=data["comment"], parent_post=current_post)
             db.session.add(new_comment)
             db.session.commit()
-    return render_template("post.html", blog=post, form=form, logged_in=current_user.is_authenticated, comments=post.comments)
+            return redirect(url_for('post', post_id=post_id))
+    return render_template("post.html", blog=current_post, form=form, logged_in=current_user.is_authenticated, comments=current_post.comments)
 
 @app.route('/new-post', methods=["GET", "POST"])
 @admin_only

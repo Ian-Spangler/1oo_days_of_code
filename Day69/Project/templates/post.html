@@ -1,3 +1,4 @@
+{% from "bootstrap5/form.html" import render_form %}
 {% include "header.html" %}
         <!-- Page Header-->
             <header class="masthead" style="background-image: url('{{ blog.image_url }}')">
@@ -27,7 +28,8 @@
                     </div>
                 </div>
             </article>
-            {% for comment in post.comments: %}
+            {{render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+            {% for comment in comments: %}
             <li>
               <div class="commenterImage">
                 <img
