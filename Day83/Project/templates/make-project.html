@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block title %}{{ function }}{% endblock %}
+
+{% block content %}
+
+<h2>{{ function }}</h2>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+        {{ form.title.label(class="form-label") }}
+        {{ form.title(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.short_description.label(class="form-label") }}
+        {{ form.short_description(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.img_url.label(class="form-label") }}
+        {{ form.img_url(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.github_url.label(class="form-label") }}
+        {{ form.github_url(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.project_detail.label(class="form-label") }}
+        {{ form.project_detail(class="form-control") }}
+    </div>
+
+    {{ form.submit(class="btn btn-success") }}
+</form>
+
+{% endblock %}
