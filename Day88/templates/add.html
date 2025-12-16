@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Add Cafe{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="mb-4">➕ Add New Cafe</h3>
+
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Cafe Name</label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Location</label>
+                        <input type="text" class="form-control" name="location" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Google Map URL</label>
+                        <input type="url" class="form-control" name="map_url" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Image URL</label>
+                        <input type="url" class="form-control" name="img_url" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Seats</label>
+                        <input type="text" class="form-control" name="seats">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Coffee Price</label>
+                        <input type="text" class="form-control" name="coffee_price">
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="wifi">
+                        <label class="form-check-label">Wifi</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="sockets">
+                        <label class="form-check-label">Sockets</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="toilet">
+                        <label class="form-check-label">Toilet</label>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" name="calls">
+                        <label class="form-check-label">Can Take Calls</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Save Cafe</button>
+                    <a href="/" class="btn btn-secondary">Cancel</a>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
