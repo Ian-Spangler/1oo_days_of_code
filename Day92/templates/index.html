@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Color Palette Extractor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 40px;
+            text-align: center;
+        }
+        .palette {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .color-box {
+            width: 120px;
+            height: 120px;
+            margin: 10px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 14px;
+            border-radius: 8px;
+        }
+        img {
+            max-width: 300px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🎨 Image Color Palette Extractor</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    <input type="file" name="image" required>
+    <button type="submit">Upload</button>
+</form>
+
+{% if image_url %}
+    <h2>Uploaded Image</h2>
+    <img src="{{ image_url }}">
+{% endif %}
+
+{% if colors %}
+    <h2>Top 10 Colors</h2>
+    <div class="palette">
+        {% for color in colors %}
+            <div class="color-box" style="background: {{ color.hex }}">
+                <div>{{ color.hex }}</div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+</body>
+</html>
