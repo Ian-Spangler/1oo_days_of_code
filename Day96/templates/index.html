@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grammar Checker</title>
+</head>
+<body>
+
+<h1>Perfect Tense Grammar Checker</h1>
+
+<form method="POST">
+    <textarea name="text_input" rows="5" cols="50"
+              placeholder="Type text here...">{{ original }}</textarea>
+    <br><br>
+    <button type="submit">Check</button>
+</form>
+
+{% if corrected %}
+    <h2>Corrected Text</h2>
+    <p>{{ corrected }}</p>
+    <h3>Grammar Score: {{ score }}</h3>
+{% endif %}
+
+</body>
+</html>
