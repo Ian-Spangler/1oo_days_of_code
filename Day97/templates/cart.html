@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+<h2>Cart</h2>
+
+{% for item in items %}
+<p>{{ item.product.name }} x {{ item.qty }}</p>
+{% endfor %}
+
+<p><strong>Total:</strong> ${{ total / 100 }}</p>
+
+<a href="/checkout" class="btn btn-success">Checkout</a>
+{% endblock %}
